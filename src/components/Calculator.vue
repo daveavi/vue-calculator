@@ -29,6 +29,8 @@ export default{
         return{
             current: '0',
             previous: '',
+            multVal: '',
+            divVal: '',
             operation: '',
             operationClicked: false
         }
@@ -36,6 +38,9 @@ export default{
     methods: {
         clear: function(){
             this.current = '0';
+            this.previous = '';
+            this.operation = '';
+            this.operation = false;
         },
         sign: function(){
             if(this.current !='0'){
@@ -46,13 +51,20 @@ export default{
             this.current = `${parseFloat(this.current)/100}`;
         },
         append: function(number){
-            if(this.current != '0' & !this.operationClicked){
+            if(this.current != '0' && !this.operationClicked){
                 this.current = `${this.current}${number}`
-                console.log(this.current)
+            // }else if(this.operation != '/' || this.operation != 'x'){
+            //     this.previous = this.current;
+            //     this.current = `${number}`
+            //     this.operationClicked = false;
+            // }
             }else{
+              this.previous = this.current;
                 this.current = `${number}`
-                this.operationClicked = false;
+                this.operationClicked = false;  
             }
+            console.log(this.current);
+            console.log(this.previous);
             //this.current = `${this.current}${number}`
         },
         dot: function(){
@@ -62,33 +74,92 @@ export default{
         },
 
         divide: function(){
+            if(this.previous == ''){
+                this.previous = this.current
+                console.log(this.previous)
+            }else{
+                if(this.operation == '/' ){
+                    this.current = `${parseFloat(this.previous)/parseFloat(this.current)}`
+                    this.previous = '';
+                }else{
+                    console.log("I am here");
+                    
+                    this.equal(); 
+                }
+            }
+            this.operationClicked = true;
+            this.operation = '/';
 
         },
+
         multiply: function(){
+            if(this.previous == ''){
+                this.previous = this.current
+                console.log(this.previous)
+            }else{
+                if(this.operation == 'x' ){
+                    this.current = `${parseFloat(this.previous)*parseFloat(this.current)}`
+                    this.previous = '';
+                }else{
+                    console.log("I am here");
+                    this.equal(); 
+                }
+            }
 
         },
+
+
         subtract: function(){
             if(this.previous == ''){
                 this.previous = this.current
-                this.operationClicked = true;
+                console.log(this.previous)
             }else{
-                this.current = `${parseFloat(this.current) - parseFloat(this.previous)}`
-                this.previous = ''
-                this.operationClicked = true;
+                if(this.operation == '-' ){
+                    this.current = `${parseFloat(this.previous) - parseFloat(this.current)}`
+                    this.previous = '';
+                }else{
+                    console.log("I am here");
+                    this.equal(); 
+                }
             }
+            this.operationClicked = true;
+            this.operation = '-';
 
         },
         add: function(){
-            if(this.previous == ''){
+            if(this.previous == '' && this.operation == ''){
                 this.previous = this.current
-                this.operationClicked = true;
             }else{
-                this.current = `${parseFloat(this.current) + parseFloat(this.previous)}`
-                this.previous = ''
-                this.operationClicked = true;
+                if(this.operation == '+' ){
+                    this.current = `${parseFloat(this.current) + parseFloat(this.previous)}`
+                    this.previous = '';
+                }else{
+                    this.equal(); 
+                }
             }
+            this.operationClicked = true;
+            this.operation = '+';
+
         },
         equal: function(){
+            if(this.previous != ''){
+                switch(this.operation) {
+                    case '+':
+                        this.add();
+                        break;
+                    case '-':
+                        this.subtract();
+                        break;
+                    case 'x':
+                        this.multiply();
+                        break;
+                    case '/':
+                        this.divide();
+                        break;
+                    
+                    default:
+                    }
+            }
             
         }
     }
