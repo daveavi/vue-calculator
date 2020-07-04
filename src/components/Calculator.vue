@@ -28,6 +28,9 @@ export default{
     data(){
         return{
             current: '0',
+            previous: '',
+            operation: '',
+            operationClicked: false
         }
     },
     methods: {
@@ -43,12 +46,14 @@ export default{
             this.current = `${parseFloat(this.current)/100}`;
         },
         append: function(number){
-            if(this.current != '0'){
+            if(this.current != '0' & !this.operationClicked){
                 this.current = `${this.current}${number}`
                 console.log(this.current)
             }else{
                 this.current = `${number}`
+                this.operationClicked = false;
             }
+            //this.current = `${this.current}${number}`
         },
         dot: function(){
             if(this.current.indexOf('.') === -1){
@@ -63,13 +68,28 @@ export default{
 
         },
         subtract: function(){
+            if(this.previous == ''){
+                this.previous = this.current
+                this.operationClicked = true;
+            }else{
+                this.current = `${parseFloat(this.current) - parseFloat(this.previous)}`
+                this.previous = ''
+                this.operationClicked = true;
+            }
 
         },
         add: function(){
-
+            if(this.previous == ''){
+                this.previous = this.current
+                this.operationClicked = true;
+            }else{
+                this.current = `${parseFloat(this.current) + parseFloat(this.previous)}`
+                this.previous = ''
+                this.operationClicked = true;
+            }
         },
         equal: function(){
-
+            
         }
     }
 
