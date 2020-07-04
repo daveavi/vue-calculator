@@ -1,6 +1,6 @@
 <template>
     <div class="calculator"> 
-        <div class="display">{{current}}</div> 
+        <div class="display">{{current || 0}}</div> 
         <div @click="clear" class="btn">C</div>
         <div @click="sign" class="btn">+/-</div>
         <div @click="percentage" class="btn">%</div>
@@ -27,7 +27,7 @@
 export default{
     data(){
         return{
-            current: '0',
+            current: '',
             previous: '',
             multVal: '',
             divVal: '',
@@ -60,8 +60,8 @@ export default{
             // }
             }else{
               this.previous = this.current;
-                this.current = `${number}`
-                this.operationClicked = false;  
+              this.current = `${number}`
+              this.operationClicked = false;  
             }
             console.log(this.current);
             console.log(this.previous);
@@ -95,9 +95,8 @@ export default{
         multiply: function(){
             if(this.previous == ''){
                 this.previous = this.current
-                console.log(this.previous)
             }else{
-                if(this.operation == 'x' ){
+                if(this.operation == 'x'){
                     this.current = `${parseFloat(this.previous)*parseFloat(this.current)}`
                     this.previous = '';
                 }else{
@@ -105,6 +104,8 @@ export default{
                     this.equal(); 
                 }
             }
+            this.operationClicked = true;
+            this.operation = 'x';
 
         },
 
@@ -127,7 +128,7 @@ export default{
 
         },
         add: function(){
-            if(this.previous == '' && this.operation == ''){
+            if(this.previous == ''){
                 this.previous = this.current
             }else{
                 if(this.operation == '+' ){
